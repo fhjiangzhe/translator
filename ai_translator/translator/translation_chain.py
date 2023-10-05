@@ -1,6 +1,6 @@
 from langchain.chat_models import ChatOpenAI
 from langchain.chains import LLMChain
-from transformers import AutoTokenizer, AutoModel
+from .chatglm2 import ChatGLM2
 
 from langchain.prompts.chat import (
     ChatPromptTemplate,
@@ -11,7 +11,8 @@ from langchain.prompts.chat import (
 from utils import LOG
 
 class TranslationChain:
-    def __init__(self, model_name: str = "gpt-3.5-turbo", verbose: bool = True):
+    # def __init__(self, model_name: str = "gpt-3.5-turbo", verbose: bool = True):
+    def __init__(self, model_name: str = "chatglm2", verbose: bool = True):
         
         # 翻译任务指令始终由 System 角色承担
         template = (
@@ -30,7 +31,14 @@ class TranslationChain:
         )
 
         # 为了翻译结果的稳定性，将 temperature 设置为 0
-        chat = ChatOpenAI(model_name=model_name, temperature=0, verbose=verbose)
+        # chat = ChatOpenAI(model_name=model_name, temperature=0, verbose=verbose)
+        print(f"Loading chat model {model_name}")
+        if model_name == "chatglm2":
+            chat = ChatGLM2()
+        elif model_name == "gpt-3.5-turbo":
+            chat = ChatOpenAI(model_name=model_name, temperature=0, verbose=verbose)
+        else:
+            chat = ChatOpenAI(verbose=verbose)
 
         self.chain = LLMChain(llm=chat, prompt=chat_prompt_template, verbose=verbose)
 
