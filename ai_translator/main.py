@@ -21,7 +21,7 @@ def translate_pdf(file, source_lang, target_lang):
     shutil.copy(file.name, destination)
 
     # 实例化 PDFTranslator 类，并调用 translate_pdf() 方法
-    translator = PDFTranslator("gpt-3.5-turbo")
+    translator = PDFTranslator("chatglm2")
     translated_file_path = translator.translate_pdf(destination, "markdown", source_lang, target_lang, pages=None)
 
     return translated_file_path

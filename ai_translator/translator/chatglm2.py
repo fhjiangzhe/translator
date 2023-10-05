@@ -18,7 +18,7 @@ from langchain.schema import (
 from transformers import AutoTokenizer, AutoModel
 
 class ChatGLM2(BaseChatModel):
-    tokenizer = AutoTokenizer.from_pretrained("THUDM/chatglm2-6b-int4", trust_remote_code=True)
+    tokenize = AutoTokenizer.from_pretrained("THUDM/chatglm2-6b-int4", trust_remote_code=True)
     model = AutoModel.from_pretrained("THUDM/chatglm2-6b-int4", trust_remote_code=True).float()
     model.eval()
 
@@ -43,7 +43,7 @@ class ChatGLM2(BaseChatModel):
         return ChatResult(generations=generations)
 
     def _chat(self, message: str) -> str:
-        response, history = self.model.chat(self.tokenizer, message, history=[])
+        response, history = self.model.chat(self.tokenize, message, history=[])
         return response
 
     # 转换 BaseMessage
